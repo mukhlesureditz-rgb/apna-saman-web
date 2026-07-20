@@ -22,6 +22,7 @@ import { EmptyState } from '../../components/ui/EmptyState';
 import { Badge } from '../../components/ui/Badge';
 import { ConfirmDialog } from '../../components/ui/ConfirmDialog';
 import { ORDER_STATUS_META, formatINR, formatDate, cn } from '../../lib/utils';
+import { sfx } from '../../lib/sound';
 
 export function AdminOrderDetails() {
   const { id } = useParams();
@@ -69,6 +70,7 @@ export function AdminOrderDetails() {
       toast(error.message, 'error');
       return;
     }
+    sfx.status();
     toast(`Order marked as ${ORDER_STATUS_META[status].label}`, 'success');
     load();
   };

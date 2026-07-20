@@ -1,6 +1,7 @@
 import { createContext, useCallback, useContext, useState, type ReactNode } from 'react';
 import { CheckCircle2, Info, XCircle, AlertTriangle, X } from 'lucide-react';
 import { cn } from '../../lib/utils';
+import { sfx } from '../../lib/sound';
 
 type ToastType = 'success' | 'error' | 'info' | 'warning';
 interface Toast {
@@ -34,6 +35,10 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   const toast = useCallback((message: string, type: ToastType = 'success') => {
     const id = Math.random().toString(36).slice(2);
     setToasts((t) => [...t, { id, type, message }]);
+    if (type === 'success') sfx.success();
+    else if (type === 'error') sfx.error();
+    else if (type === 'warning') sfx.warning();
+    else sfx.info();
     setTimeout(() => setToasts((t) => t.filter((x) => x.id !== id)), 3500);
   }, []);
 

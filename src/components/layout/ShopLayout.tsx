@@ -2,6 +2,7 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Home, LayoutGrid, ShoppingCart, ClipboardList, User } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 import { cn } from '../../lib/utils';
+import { sfx } from '../../lib/sound';
 
 const tabs = [
   { to: '/', label: 'Home', icon: Home, match: (p: string) => p === '/' },
@@ -31,7 +32,7 @@ export function ShopLayout() {
               return (
                 <li key={t.to}>
                   <button
-                    onClick={() => navigate(t.to)}
+                    onClick={() => { sfx.click(); navigate(t.to); }}
                     className={cn(
                       'relative w-full flex flex-col items-center gap-1 py-2 rounded-2xl transition-all',
                       active ? 'text-brand-700' : 'text-ink-400 hover:text-ink-700',

@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import type { CartItem, Product } from '../lib/types';
+import { sfx } from '../lib/sound';
 
 interface CartContextValue {
   items: CartItem[];
@@ -39,6 +40,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }, [items]);
 
   const add: CartContextValue['add'] = (product, qty = 1) => {
+    sfx.add();
     setItems((prev) => {
       const existing = prev.find((i) => i.product.id === product.id);
       if (existing) {
@@ -50,15 +52,19 @@ export function CartProvider({ children }: { children: ReactNode }) {
     });
   };
 
-  const remove: CartContextValue['remove'] = (productId) =>
+  const remove: CartContextValue['remove'] = (productId) => {
+    sfx.remove();
     setItems((prev) => prev.filter((i) => i.product.id !== productId));
+  };
 
-  const setQty: CartContextValue['setQty'] = (productId, qty) =>
+  const setQty: CartContextValue['setQty'] = (productId, qty) => {
+    sfx.tap();
     setItems((prev) =>
       qty <= 0
         ? prev.filter((i) => i.product.id !== productId)
         : prev.map((i) => (i.product.id === productId ? { ...i, quantity: qty } : i)),
     );
+  };
 
   const clear = () => setItems([]);
 

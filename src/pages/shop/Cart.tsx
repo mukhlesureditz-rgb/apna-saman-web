@@ -9,6 +9,7 @@ import { EmptyState } from '../../components/ui/EmptyState';
 import { Modal } from '../../components/ui/Modal';
 import { supabase } from '../../lib/supabase';
 import { formatINR } from '../../lib/utils';
+import { sfx } from '../../lib/sound';
 
 export function Cart() {
   const navigate = useNavigate();
@@ -67,6 +68,7 @@ export function Cart() {
     clear();
     setPlacing(false);
     setConfirmOpen(false);
+    sfx.order();
     toast('Order placed successfully!', 'success');
     navigate('/orders', { replace: true });
   };

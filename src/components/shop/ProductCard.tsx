@@ -3,6 +3,7 @@ import { SmartImage } from '../ui/SmartImage';
 import { Badge } from '../ui/Badge';
 import { useCart } from '../../context/CartContext';
 import { formatINR, STOCK_STATUS_META, cn } from '../../lib/utils';
+import { sfx } from '../../lib/sound';
 import type { Product } from '../../lib/types';
 
 export function ProductCard({ product }: { product: Product }) {
@@ -36,14 +37,14 @@ export function ProductCard({ product }: { product: Product }) {
       ) : inCart ? (
         <div className="flex items-center justify-between gap-2 mt-2 bg-brand-50 rounded-2xl p-1">
           <button
-            onClick={() => setQty(product.id, inCart.quantity - 1)}
+            onClick={() => { sfx.tap(); setQty(product.id, inCart.quantity - 1); }}
             className="grid place-items-center h-9 w-9 rounded-xl bg-white text-brand-700 shadow-soft hover:bg-brand-100"
           >
             <Minus size={16} />
           </button>
           <span className="font-bold text-brand-800">{inCart.quantity}</span>
           <button
-            onClick={() => setQty(product.id, inCart.quantity + 1)}
+            onClick={() => { sfx.tap(); setQty(product.id, inCart.quantity + 1); }}
             className="grid place-items-center h-9 w-9 rounded-xl bg-brand-700 text-white shadow-soft hover:bg-brand-800"
           >
             <Plus size={16} />

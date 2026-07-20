@@ -18,6 +18,7 @@ import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../ui/Toast';
 import { Logo } from '../ui/Logo';
 import { cn, relativeTime } from '../../lib/utils';
+import { sfx } from '../../lib/sound';
 import type { AdminNotification } from '../../lib/types';
 
 const navItems = [
@@ -30,29 +31,7 @@ const navItems = [
 ];
 
 function playNotificationSound() {
-  try {
-    const AC = window.AudioContext || (window as any).webkitAudioContext;
-    const ctx = new AC();
-    const playTone = (freq: number, start: number, dur: number) => {
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.frequency.value = freq;
-      osc.type = 'sine';
-      const t0 = ctx.currentTime + start;
-      gain.gain.setValueAtTime(0.0001, t0);
-      gain.gain.exponentialRampToValueAtTime(0.3, t0 + 0.02);
-      gain.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
-      osc.start(t0);
-      osc.stop(t0 + dur + 0.05);
-    };
-    playTone(880, 0, 0.18);
-    playTone(1175, 0.16, 0.22);
-    setTimeout(() => ctx.close(), 600);
-  } catch {
-    // audio not available
-  }
+  sfx.notification();
 }
 
 export function AdminLayout() {
@@ -131,6 +110,7 @@ export function AdminLayout() {
             <button
               key={item.to}
               onClick={() => {
+                sfx.click();
                 navigate(item.to);
                 setMobileOpen(false);
               }}
